@@ -16,7 +16,16 @@ def build_course(semester, course_names, course_numbers, course_descriptions, co
         course_total_points
     ):
         
-        course = create_course(name, number, description, attempted, earned, grade, total)
+        course = {
+            "name": name,
+            "number": number,
+            "description": description,
+            "attempted_points": attempted,
+            "earned_points": earned,
+            "letter_grade": grade,
+            "total_points": total
+        }
+        
         courses.append(course)
         sem_courses_map[semester] = courses 
     

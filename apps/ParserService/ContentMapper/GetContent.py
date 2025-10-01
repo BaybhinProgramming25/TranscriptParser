@@ -1,22 +1,18 @@
-from Constants import AVOIDED_CLASSES
-from Constants import GRADES_VALUE_MAPPING
-from Constants import TRANSFER_FORMARTS
-from Constants import MATH_PLACEMENT_MAPPING
-from Constants import TERMINATING_WORDS
+from Constants import AVOIDED_CLASSES, GRADES_VALUE_MAPPING, TRANSFER_FORMARTS, MATH_PLACEMENT_MAPPING, TERMINATING_WORDS
 
 from ContentMapper.BuildCourse import build_course
 
 def get_content_from_each_sem(sm_ll, pdf_pages_list):
 
     # Make sure we have at least two nodes 
-    if(sm_ll is None or sm_ll.head.next is None):
+    if sm_ll is None or sm_ll.head.next is None:
         return 
     
     slow_ptr = sm_ll.head
     fast_ptr = slow_ptr.next
-
+    
+    all_semesters = []
     while fast_ptr:
-
         sub_arr = pdf_pages_list[slow_ptr.data[1]:fast_ptr.data[1]]
 
         # Will eventually be multithreaded soon 
@@ -28,14 +24,13 @@ def get_content_from_each_sem(sm_ll, pdf_pages_list):
         course_letter_grades = get_course_letter(sub_arr)
         course_total_points = get_course_total_points(sub_arr)
 
-         # Once all data is collected, send them into a bundler function to build the data 
         semester_courses = build_course(slow_ptr.data[0], course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points)
-        print(semester_courses)
+        all_semesters.append(semester_courses)
 
         slow_ptr = fast_ptr
         fast_ptr = fast_ptr.next
-
     
+    return all_semesters
 
 def get_course_name(sub_arr):
 
