@@ -2,7 +2,7 @@ import pymupdf
 import requests 
 
 from SemesterMapper.GetMapping import get_sem_mapping
-from ContentMapper.GetContent import get_content_from_each_sem
+from Apps.ParserService.ContentMapper.GetCourses import get_content_from_each_sem
 
 if __name__ == "__main__":
     doc = pymupdf.open("../../PDFs/Test1.pdf")

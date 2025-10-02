@@ -1,7 +1,6 @@
-from ContentMapper.CourseDataObject import create_course
 
 def build_course(semester, course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points):
-    
+        
     sem_courses_map = {}
     courses = []
 
