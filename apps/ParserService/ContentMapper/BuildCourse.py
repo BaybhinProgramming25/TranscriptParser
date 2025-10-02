@@ -5,7 +5,6 @@ def build_course(semester, course_names, course_numbers, course_descriptions, co
     sem_courses_map = {}
     courses = []
 
-    # zip() puts matching items together like a zipper!
     for name, number, description, attempted, earned, grade, total in zip(
         course_names,
         course_numbers,

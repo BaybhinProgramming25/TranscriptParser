@@ -18,8 +18,6 @@ app.post('/studentdata', (req, res) => {
 
     // Put the data into MySQL database
     // Will do this later 
-    
-
     res.json({ message: 'Successfully received data!'})
 
 })
