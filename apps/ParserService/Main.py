@@ -1,26 +1,13 @@
-import pymupdf
-import requests 
+import requests
+from fastapi import FastAPI
 
-from SemesterMapper.GetMapping import get_sem_mapping
-from Apps.ParserService.ContentMapper.GetCourses import get_content_from_each_sem
+app = FastAPI()
+
+from Controllers.Parse import router as parse_router 
+
+app.include_router(parse_router)
 
 if __name__ == "__main__":
-    doc = pymupdf.open("../../PDFs/Test1.pdf")
-
-    pdf_pages_list = []
-    for page in doc:
-        text = page.get_text("text").strip("").split('\n')
-        pdf_pages_list.extend(text)
-
-    # Call sememster mapping function
-    sm_ll = get_sem_mapping(pdf_pages_list)
-
-    # All semester data 
-    sem_data = get_content_from_each_sem(sm_ll, pdf_pages_list)
-
-    # Now we send this data to the backend 
-    response = requests.post('http://localhost:3000/studentdata', json=sem_data)
-    print(response.json())
-
-        
-      
+    import uvicorn 
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+    

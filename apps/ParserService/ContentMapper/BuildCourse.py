@@ -1,8 +1,4 @@
-
-def build_course(semester, course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points):
-        
-    sem_courses_map = {}
-    courses = []
+def build_course(student_id, semester, course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points, semesters_map):
 
     for name, number, description, attempted, earned, grade, total in zip(
         course_names,
@@ -13,19 +9,10 @@ def build_course(semester, course_names, course_numbers, course_descriptions, co
         course_letter_grades,
         course_total_points
     ):
-        
-        course = {
-            "name": name,
-            "number": number,
-            "description": description,
-            "attempted_points": attempted,
-            "earned_points": earned,
-            "letter_grade": grade,
-            "total_points": total
-        }
-        
-        courses.append(course)
-        sem_courses_map[semester] = courses 
+
+        class_str = f"{name}{number} is about {description}, earned {earned} out of {attempted} points, received grade {grade}, total points is {total}"
+        key = f"{student_id}_{semester}_{name}{number}"
+        semesters_map[key] = class_str 
     
-    return sem_courses_map 
+    return semesters_map 
         

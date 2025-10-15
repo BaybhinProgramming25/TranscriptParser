@@ -3,6 +3,7 @@ TRANSCRIPT_BEGINNING = "Beginning"
 TRANSCRIPT_END = "End"
 TEST_CREDITS = "Test Credits"
 TRANSFER_CREDITS = "Transfer Credits"
+STUDENT_ID = "Student ID"
 
 # Test and Transfer Class Formats
 TRANSFER_FORMARTS = ["LVL", "/AP"]

@@ -10,12 +10,14 @@ def get_content_from_each_sem(sm_ll, pdf_pages_list):
     
     slow_ptr = sm_ll.head
     fast_ptr = slow_ptr.next
-    
-    all_semesters = []
+
+    student_id = get_student_id(pdf_pages_list[slow_ptr.data[1]])
+
+    all_semesters = {}
     while fast_ptr:
         sub_arr = pdf_pages_list[slow_ptr.data[1]:fast_ptr.data[1]]
 
-        # Will eventually be multithreaded soon 
+        # Will eventually be multithreaded soon
         course_names = get_course_name(sub_arr)
         course_numbers = get_course_number(sub_arr)
         course_descriptions = get_course_description(sub_arr)
@@ -24,13 +26,17 @@ def get_content_from_each_sem(sm_ll, pdf_pages_list):
         course_letter_grades = get_course_letter(sub_arr)
         course_total_points = get_course_total_points(sub_arr)
 
-        semester_courses = build_course(slow_ptr.data[0], course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points)
-        all_semesters.append(semester_courses)
+        all_semesters = build_course(student_id, slow_ptr.data[0], course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points, all_semesters)
 
         slow_ptr = fast_ptr
         fast_ptr = fast_ptr.next
     
     return all_semesters
+
+def get_student_id(text):
+
+    student_id = text.split(":")[-1].strip()
+    return student_id
 
 def get_course_name(sub_arr):
 
@@ -163,7 +169,6 @@ def get_course_total_points(sub_arr):
     return total_points_container
 
 # Might collect more data later on 
-
 # Helper 
 def is_valid_course_format(value):
     if len(value) < 3:

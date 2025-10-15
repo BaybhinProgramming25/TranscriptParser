@@ -1,10 +1,5 @@
 from SemesterMapper.SemLinkedList import SemLinkedList
-
-from Constants import SEASONS
-from Constants import TEST_CREDITS
-from Constants import TRANSFER_CREDITS
-from Constants import TRANSCRIPT_BEGINNING
-from Constants import TRANSCRIPT_END
+from Constants import SEASONS, TEST_CREDITS, TRANSFER_CREDITS, TRANSCRIPT_BEGINNING, TRANSCRIPT_END, STUDENT_ID
 
 def get_sem_mapping(pdf_pages_list):
 
@@ -13,7 +8,10 @@ def get_sem_mapping(pdf_pages_list):
     
     for index, value in enumerate(pdf_pages_list):
 
-        if value == TEST_CREDITS:
+        # Look for STUDENT ID 
+        if STUDENT_ID in value:
+            sm_ll.add((STUDENT_ID, index))
+        elif value == TEST_CREDITS:
             sm_ll.add((TEST_CREDITS, index))
         elif value == TRANSFER_CREDITS:
             sm_ll.add((TRANSFER_CREDITS, index))
@@ -30,4 +28,6 @@ def get_sem_mapping(pdf_pages_list):
                     semester_label = f"{semester} {semester_info}"
                     sm_ll.add((semester_label, index))
                     break
+    
+    print(sm_ll)
     return sm_ll
