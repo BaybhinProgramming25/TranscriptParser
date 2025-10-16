@@ -87,5 +87,9 @@ python .\Main.py
 
 This will launch a FastAPI server on __http://127.0.0.1:8002__
 
+## Docker Installation
+
+Coming Soon...
+
 
 
