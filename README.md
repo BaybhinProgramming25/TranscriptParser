@@ -3,6 +3,11 @@ Transcript Q&A is a Python program that allows you to input PDFs of your transcr
 This program is specifically for __computer science students__ attending __Stony Brook University__, as so far the sample space data used is limited to students within the CSE program.
 
 
+## What to Install
+
+- Docker Desktop 
+- Ollama (specifically llama3:8b model)
+
 ## Installation
 This program assumes you have downloaded the __Python__ programming language, which also comes with __pip__ package manager.
 
