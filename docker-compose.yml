@@ -1,0 +1,60 @@
+services:
+  ollama:
+    image: ollama/ollama 
+    ports:
+      - "11434:11434"
+    volumes:
+      - "ollama_data:/root/.ollama"
+    environment:
+      - OLLAMA_HOST=ollama
+    networks:
+      - transcript-qa
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull nomic-embed-text && wait"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all 
+              capabilities: [gpu]
+
+    
+  chromadb:
+    image: chromadb/chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma-data:/data
+    environment:
+      - CHROMA_HOST=chromadb
+    networks:
+      - transcript-qa
+  
+  backend:
+    image: tqa-backend 
+    build: 
+      context: ./backend 
+      dockerfile: Dockerfile 
+    ports:
+      - "3000:3000"
+    networks:
+      - transcript-qa
+  
+  frontend:
+    image: tqa-frontend
+    build:
+      context: ./interface 
+      dockerfile: Dockerfile 
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend 
+    networks:
+      - transcript-qa
+
+
+volumes:
+  chroma-data:
+  ollama_data:
+networks:
+  transcript-qa: 
