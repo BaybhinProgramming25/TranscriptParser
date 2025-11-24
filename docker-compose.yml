@@ -9,15 +9,7 @@ services:
       - OLLAMA_HOST=ollama
     networks:
       - transcript-qa
-    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull nomic-embed-text && wait"]
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all 
-              capabilities: [gpu]
-
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull nomic-embed-text && ollama pull phi3 && wait"]
     
   chromadb:
     image: chromadb/chroma
