@@ -1,7 +1,10 @@
 import { useState, useRef } from 'react';
+import axios from 'axios';
+
 import './Chat.css';
 
 const Chat = () => {
+
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -10,8 +13,8 @@ const Chat = () => {
   const fileInputRef = useRef(null);
 
   const handleFileUpload = (e) => {
+
     const files = Array.from(e.target.files);
-    
     const pdfFiles = files.filter(file => file.type === 'application/pdf');
     
     if (pdfFiles.length !== files.length) {
@@ -48,15 +51,26 @@ const Chat = () => {
       files: uploadedFiles.length > 0 ? uploadedFiles : null
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setUploadedFiles([]);
-    setIsLoading(true);
+    try {
 
-    // Then we need to make an API response
-    // SetTimeOut() is a temporary fix but we will need to modify it depending on how long the API response takes 
-        
-    setTimeout(() => {
+      const formData = new FormData()
+      formData.append('message', inputValue)
+
+      if (uploadedFiles.length > 0) {
+        formData.append('file', uploadedFiles[0].file)
+      }
+      
+      console.log(formData);
+      console.log("Response made it here");
+      const response = await axios.post('http://localhost:3000/parse', formData, { withCredentials: true });
+      console.log(response);
+
+      setMessages(prev => [...prev, userMessage]);
+      setInputValue('');
+      setUploadedFiles([]);
+      setIsLoading(true);
+
+      setTimeout(() => {
       const aiMessage = {
         id: Date.now() + 1,
         text: 'This is a sample response. Connect this to your LLM API!',
@@ -65,7 +79,11 @@ const Chat = () => {
       };
       setMessages(prev => [...prev, aiMessage]);
       setIsLoading(false);
-    }, 1000);
+      }, 1000);
+    }
+    catch (error){
+      console.error('Error making request to backend: ', error);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -123,7 +141,6 @@ const Chat = () => {
       </div>
 
       <div className="chat-input-container">
-        {/* Hidden file input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -133,7 +150,6 @@ const Chat = () => {
           style={{ display: 'none' }}
         />
 
-        {/* Plus button for file upload */}
         <button
           className="plus-button"
           onClick={handlePlusClick}
