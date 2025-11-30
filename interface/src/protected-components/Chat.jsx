@@ -9,7 +9,6 @@ const Chat = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
   const fileInputRef = useRef(null);
 
   const handleFileUpload = (e) => {
