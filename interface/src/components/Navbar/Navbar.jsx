@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 import { Link } from 'react-router-dom';
@@ -6,17 +7,21 @@ import axios from 'axios'
 import './Navbar.css'
 
 const Navbar = () => {
+    
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const logout_wrapper = async () => {
         try {
-            await axios.post('http://localhost:8000/api/logout', user, { withCredentials: true });
+            await axios.post('http://localhost:3000/api/logout', user, { withCredentials: true });
             logout();
-            setIsMenuOpen(false); // Close menu after logout
+            setIsMenuOpen(false);
+            navigate('/');
         }
         catch (error) {
             console.error('Error logging out', error);
+            alert('Unable to logout')
         }
     }
 
@@ -55,9 +60,8 @@ const Navbar = () => {
                     <div className={`hamburger-content ${isMenuOpen ? 'show' : ''}`}>
                         {(user) && (
                             <>
-                                <Link to="/dashboard" onClick={closeMenu}>Dashboard</Link>
-                                <Link to="/contact" onClick={closeMenu}>Contact Us</Link>
-                                <Link to="/login" onClick={logout_wrapper}>Logout</Link>
+                                <Link to="/parse" onClick={closeMenu}>Dashboard</Link>
+                                <Link to="/logout" onClick={logout_wrapper}>Logout</Link>
                             </>
                         )}
                         {(!user) && (
