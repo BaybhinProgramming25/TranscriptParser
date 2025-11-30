@@ -6,36 +6,31 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
-    const [accessToken, setAccessToken] = useState("");
 
     useEffect(() => {
         const loadUserToken = async () => {
             try {
-                const response = await axios.post('http://localhost:8000/api/refresh', {}, { withCredentials: true });
-                console.log(response);
-                setUser(response.data.user);
-                setAccessToken(response.data.accessToken);
+                const response = await axios.post('http://localhost:3000/api/refresh', {}, { withCredentials: true });
+                setUser(response.data.user_data);
             }
             catch (error) {
                 console.error('Error with making axios post', error);
+                alert("Token is no longer valid. Please login again");
             }
         } 
         loadUserToken();
     }, [])
 
-
-    const login = (user_data, accessToken) => {
-        setUser(user_data);
-        setAccessToken(accessToken);
+    const login = (user_data) => { 
+        setUser(user_data); 
     }
 
-    const logout = () => {
-        setUser(null);
-        setAccessToken("");
+    const logout = () => { 
+        setUser(null); 
     }
 
     return (
-        <AuthContext.Provider value={{ user, accessToken, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
