@@ -11,7 +11,8 @@ def get_content_from_each_sem(sm_ll, pdf_pages_list):
     fast_ptr = slow_ptr.next
 
     student_id = get_student_id(pdf_pages_list[slow_ptr.data[1]])
-    academic_string = ""
+    
+    classes_holder = []
 
     while fast_ptr:
         sub_arr = pdf_pages_list[slow_ptr.data[1]:fast_ptr.data[1]]
@@ -24,13 +25,13 @@ def get_content_from_each_sem(sm_ll, pdf_pages_list):
         course_letter_grades = get_course_letter(sub_arr)
         course_total_points = get_course_total_points(sub_arr)
 
-        content_value = build_course(student_id, slow_ptr.data[0], course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points, academic_string)
-        academic_string = content_value
+        tmp_holder_array = build_course(student_id, slow_ptr.data[0], course_names, course_numbers, course_descriptions, course_attempted_points, course_earned_points, course_letter_grades, course_total_points)
+        classes_holder.extend(tmp_holder_array)
 
         slow_ptr = fast_ptr
         fast_ptr = fast_ptr.next
     
-    return academic_string
+    return classes_holder
 
 def get_student_id(text):
 
