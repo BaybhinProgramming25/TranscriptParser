@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import fitz
 from middleware.parser.semestermapper.GetMapping import get_sem_mapping
 from middleware.parser.contentmapper.GetCourses import get_content_from_each_sem
+from middleware.chunking.main import construct_chroma
 
 def parse_pdf(file_bytes):
 
@@ -18,8 +19,9 @@ def parse_pdf(file_bytes):
 
     # Get the sem_mapping
     sm_ll = get_sem_mapping(pdf_pages_list)
-    content = get_content_from_each_sem(sm_ll, pdf_pages_list)
+    student_classes = get_content_from_each_sem(sm_ll, pdf_pages_list)
 
+    # Then we want to add it to chroma 
+    construct_chroma(student_classes)
     doc.close()
-
-    return content 
+ 
