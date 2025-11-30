@@ -17,16 +17,20 @@ const SignUp = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert('Passwords do not match! Please try again');
       return;
     }
 
-    var data = { "username": username, "password": password, "email": email }
-    const response = await axios.post('http://localhost:8000/api/signup', data);
-    console.log(response);
-
-    navigate("/verify-sent")
-    
+    try {
+      var data = { "username": username, "password": password, "email": email }
+      const response = await axios.post('http://localhost:3000/api/signup', data);
+      console.log(response);
+      navigate("/verify-sent")
+    }
+    catch (error) {
+      console.error('Error sending sign up data', error)
+      alert('Error signing up. Please try again later...')
+    }
   };
 
   return (

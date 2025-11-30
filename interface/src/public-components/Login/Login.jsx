@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-
+    
       e.preventDefault();
 
       var data = { 
@@ -22,11 +22,16 @@ const Login = () => {
         "password": password 
       };
 
-      const response = await axios.post('http://localhost:8000/api/login', data, { withCredentials: true });
-      const { user_data, accessToken } = response.data
-      
-      login(user_data, accessToken);
-      navigate('/dashboard');
+      try {
+        const response = await axios.post('http://localhost:3000/api/login', data, { withCredentials: true });
+        const { user_data } = response.data;
+        login(user_data);
+        navigate('/parse');
+      }
+      catch (error) {
+        console.error('Error logging in', error)
+        alert('Unable to login. Please try again later...')
+      }
   };
 
   return (

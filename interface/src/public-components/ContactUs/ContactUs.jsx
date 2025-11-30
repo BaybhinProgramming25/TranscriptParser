@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+
 import './ContactUs.css';
 
 const ContactUs = () => {
@@ -10,6 +11,7 @@ const ContactUs = () => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
 
     const data = {
@@ -19,10 +21,14 @@ const ContactUs = () => {
       message: message
     }
 
-    const response = await axios.post('http://localhost:8000/api/contactus', data);
-    console.log(response);
-
-    alert('Thank you for contacting us! We will get back to you soon.');
+    try {
+      await axios.post('http://localhost:3000/api/contact', data);
+      alert('Thank you for contacting us! We will get back to you soon.');
+    }
+    catch (error) {
+      console.log('Error sending information')
+      alert('Unable to send message. Please try again later');
+    }
   };
 
   return (
